@@ -1,3 +1,43 @@
+
+
+# FitFlex
+
+## Project Overview
+FitFlex is a robust, cloud-powered fitness tracking platform that utilizes a blend of modern technologies and Azure services to offer a highly scalable and secure environment for fitness enthusiasts. Integrating React for the frontend, Node.js for backend operations, and a MongoDB database for data management, FitFlex provides a comprehensive toolset for managing workout routines and tracking fitness progress. The system architecture is designed to be dynamic, supporting a rich user experience with real-time data updates via the Wger API.
+
+## Key Features
+- **User Authentication**: Robust authentication powered by Azure Active Directory.
+- **Workout Management**: Users can seamlessly create, edit, and monitor workout plans.
+- **Exercise Database**: Access to a vast array of exercise data through the Wger API.
+- **Progress Tracking**: Interactive charts and graphs to visualize fitness improvements.
+- **Workout Scheduling**: Intuitive calendar functionality for planning and tracking workouts.
+
+## Technology Stack
+- **Frontend**: Developed with React, React Router, React-Big-Calendar, React-Chartjs-2.
+- **Backend**: Powered by Node.js and Express.
+- **Database**: Managed with Azure Cosmos DB.
+- **Authentication**: Secured with Azure Active Directory.
+- **API Integration**: Enhanced with the Wger API.
+- **Containerization**: Implemented using Docker.
+- **Cloud Services**: Hosted on Azure, utilizing AKS, App Service, and API Management.
+- **Monitoring**: Maintained using Azure Application Insights and Azure Monitor.
+
+## Getting Started
+These instructions will help you get a copy of FitFlex running on your local machine for development and testing purposes.
+
+### Prerequisites
+- Node.js
+- npm
+- Docker
+- An Azure account
+
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/FitFlex.git
+
+
+________________________________
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
