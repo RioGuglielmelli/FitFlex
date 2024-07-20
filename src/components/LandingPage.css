@@ -1,0 +1,40 @@
+/* src/components/LandingPage.css */
+
+.landing-page-container {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #f0f2f5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 60px;
+}
+
+.hero-section {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #00796b;
+    color: white;
+    border-radius: 8px;
+    margin-bottom: 40px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.hero-title {
+    font-weight: bold;
+}
+
+.hero-subtitle {
+    margin: 20px 0;
+}
+
+.hero-button {
+    margin-top: 20px;
+    background-color: #004d40;
+}
+
+.hero-button:hover {
+    background-color: #00251a;
+}
+
