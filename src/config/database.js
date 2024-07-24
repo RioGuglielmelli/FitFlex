@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+const uri = process.env.COSMOS_DB_CONNECTION_STRING;
 
 mongoose.connect(uri, {
     useNewUrlParser: true,
