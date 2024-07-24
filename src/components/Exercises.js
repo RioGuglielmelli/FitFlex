@@ -2,8 +2,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Box, Typography, CircularProgress, Grid, Paper, Modal, IconButton } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { fetchExercises, fetchExerciseDetails } from '../utils/api';
+import { fetchExercise, fetchExercises, fetchExerciseDetails } from '../utils/api';
 import ExerciseDetails from './ExerciseDetails'; // Import ExerciseDetails component
+import SearchBar from './SearchBar';  //my change
 import './Exercises.css';
 
 function Exercises() {
@@ -41,6 +42,7 @@ function Exercises() {
 
     return (
         <Box className="exercises-container">
+            <SearchBar /> {/*my change*/}
             <Typography variant="h4" className="exercises-title" gutterBottom>
                 Exercises
             </Typography>

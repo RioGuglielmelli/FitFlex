@@ -1,6 +1,7 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
 import './ExerciseDetails.css';
+import { Link } from 'react-router-dom';
 
 function ExerciseDetails({ exercise }) {
     return (
@@ -22,6 +23,9 @@ function ExerciseDetails({ exercise }) {
             ) : (
                 <Typography>No images available</Typography>
             )}
+            <Button variant="contained" color="primary" size="large" component={Link} to="/signin" className="hero-button">
+                Add to workout plan
+            </Button>
         </Box>
     );
 }
