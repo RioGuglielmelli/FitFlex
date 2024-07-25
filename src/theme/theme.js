@@ -1,38 +1,32 @@
 import { createTheme } from '@mui/material/styles';
-import { blue, green } from '@mui/material/colors';
 
 const theme = createTheme({
     palette: {
         primary: {
-            main: blue[500], // Customize the shade as necessary
+            main: '#0D203F', // Primary color
         },
         secondary: {
-            main: green[500], // Customize the shade as necessary
+            main: '#5BB345', // Secondary color
         },
         background: {
-            default: '#f4f4f4',
+            default: '#C4D7F2', // Background color
+        },
+        text: {
+            primary: '#0D203F', // Primary text color
+            secondary: '#19456B', // Secondary text color
         },
     },
     typography: {
-        fontFamily: 'Roboto, Arial, sans-serif',
-        h1: {
-            fontSize: '2rem',
-            fontWeight: 500,
-        },
-        h2: {
-            fontSize: '1.75rem',
-            fontWeight: 500,
-        },
-        body1: {
-            lineHeight: 1.5,
-        },
+        fontFamily: 'Roboto, sans-serif',
     },
     components: {
-        MuiAppBar: {
+        MuiButton: {
             styleOverrides: {
                 root: {
-                    backgroundColor: '#ffffff', // A light background for the app bar
-                    color: '#333333', // Dark text for contrast
+                    textTransform: 'none',
+                    '&:hover': {
+                        backgroundColor: '#3A8827', // Hover color for buttons
+                    },
                 },
             },
         },

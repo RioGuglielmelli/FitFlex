@@ -1,0 +1,40 @@
+
+
+.exercise-details-container {
+    padding: 24px;
+    background-color: #f5f5f5;
+    min-height: 100vh;
+}
+
+.exercise-details-title {
+    margin-bottom: 16px;
+}
+
+.exercise-details-description {
+    margin-bottom: 24px;
+}
+
+.exercise-images-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.exercise-image {
+    max-width: 200px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.exercise-muscles-container {
+    margin-bottom: 24px;
+}
+
+.exercise-muscle {
+    padding: 8px 16px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 8px;
+}

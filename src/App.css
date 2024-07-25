@@ -46,19 +46,19 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #00796b; /* Color of the scrollbar thumb */
+  background-color: #375d30; /* Color of the scrollbar thumb */
   border-radius: 10px; /* Roundness of the scrollbar thumb */
   border: 3px solid #f0f2f5; /* Padding around the scrollbar thumb */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #005a4f; /* Color of the scrollbar thumb when hovered */
+  background-color: #375d30; /* Color of the scrollbar thumb when hovered */
 }
 
 /* For Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #00796b #f0f2f5;
+  scrollbar-color: #375d30 #f0f2f5;
 }
 
 /* For IE and Edge */
@@ -75,11 +75,11 @@
 }
 
 *::-ms-scrollbar-thumb {
-  background-color: #00796b;
+  background-color: #375d30;
   border-radius: 10px;
   border: 3px solid #f0f2f5;
 }
 
 *::-ms-scrollbar-thumb:hover {
-  background-color: #005a4f;
+  background-color: #375d30;
 }
