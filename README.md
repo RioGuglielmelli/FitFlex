@@ -34,7 +34,7 @@ These instructions will help you get a copy of FitFlex running on your local mac
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/FitFlex.git
+   git clone https://github.com/RioGuglielmelli/FitFlex.git
 
 
 ________________________________
