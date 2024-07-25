@@ -10,6 +10,8 @@ import ExerciseDetails from './components/ExerciseDetails';
 import NotFoundPage from './components/NotFoundPage';
 import Footer from './components/Footer';
 import './App.css'; // Ensure you have this or adjust according to your file structure
+import PlanManagement from "./components/workout plan/PlanManagement";
+import PlanDetails from "./components/workout plan/PlanDetails";
 
 function App() {
   return (
@@ -26,6 +28,7 @@ function App() {
                 <Button color="inherit" component={Link} to="/signin">Sign In</Button>
                 <Button color="inherit" component={Link} to="/dashboard">Dashboard</Button>
                 <Button color="inherit" component={Link} to="/exercises">Exercises</Button>
+                <Button color="inherit" component={Link} to="/work-plan-managment">Workout Plan</Button>
               </Toolbar>
             </AppBar>
             <Box component="main" sx={{ flexGrow: 1, py: 3 }}>
@@ -35,6 +38,8 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/exercises" element={<Exercises />} />
                 <Route path="/exercises/:id" element={<ExerciseDetails />} />
+                <Route path="/work-plan-managment" element={<PlanManagement/>} />
+                <Route path="/work-plan-managment/:name" element={<PlanDetails/>}/>
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </Box>
