@@ -49,7 +49,7 @@ function App() {
                 <Route path="/exercises" element={<Exercises />} />
                 <Route path="/exercises/:id" element={<ExerciseDetails />} />
                 <Route path="/work-plan-management" element={<PlanManagement />} />
-                <Route path="/work-plan-management/:name" element={<PlanDetails />} />
+                <Route path="/work-plan-management/:id" element={<PlanDetails />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </Box>

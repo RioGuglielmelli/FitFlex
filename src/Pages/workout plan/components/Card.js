@@ -9,17 +9,20 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Box } from "@mui/material";
 import DialogBox from "./DialogBox";
 import { Link } from "react-router-dom";
+import { deleteworkout } from "utils/api";
 
 const options = ["Edit", "Delete"];
 
 export default function BasicCard({
+  id,
   name,
   description,
-  setMyWorkoutPlan,
-  myWorkoutPlan,
   createModal,
   setEditWorkoutPlan,
-  type
+  type,
+  setWorkoutId,
+  workoutId,
+  fetchWorkoutPlan
 }) {
   // menu items and functions------------------------------------------
   const [anchorEl, setAnchorEl] = useState(null);
@@ -33,10 +36,12 @@ export default function BasicCard({
 
   const handleSelect = (option) => {
     if (option === "Edit") {
-      createModal();
+      setWorkoutId(id)
+      createModal()
       setEditWorkoutPlan({ name, description });
     } else {
       handleClickOpen();
+      setWorkoutId(id)
     }
     handleClose();
   };
@@ -52,9 +57,9 @@ export default function BasicCard({
     setDialogOpen(true);
   };
 
-  const deleteWoroutHandler = () => {
-    const filteredData = myWorkoutPlan.filter((item) => item.name !== name);
-    setMyWorkoutPlan(filteredData);
+  const deleteWoroutHandler = async() => {
+   await deleteworkout(workoutId)
+   fetchWorkoutPlan()
     handleDialogClose();
   };
 
@@ -72,6 +77,7 @@ export default function BasicCard({
           boxShadow:
             "rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px",
         },
+        mt:4
       }}
     >
       {
@@ -80,13 +86,13 @@ export default function BasicCard({
             {name}
           </Typography>
           <Typography variant="body2">{description}</Typography>
-        </CardContent>) : (<Link to={`/work-plan-managment/${name}`}>
+        </CardContent>) : (<Link to={`/work-plan-management/${id}`}>
           {" "}
           <CardContent>
-            <Typography variant="h2" component="div" sx={{ mb: 1 }}>
+            <Typography variant="h5" component="div" sx={{ mb: 1 }}>
               {name}
             </Typography>
-            <Typography variant="body2">{description}</Typography>
+            <Typography variant="body2" sx={{mb:1}}>{description}</Typography>
           </CardContent>
         </Link>)
       }

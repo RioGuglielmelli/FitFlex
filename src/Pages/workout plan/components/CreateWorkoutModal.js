@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
 import { Button, Grid } from "@mui/material";
+import { createworkout, editworkout } from "utils/api";
 
 const style = {
   position: "absolute",
@@ -19,10 +20,11 @@ const style = {
 export default function CreateWorkoutModal({
   openModal,
   setOpenModal,
-  setMyWorkoutPlan,
   editWorkoutPlan,
   setEditWorkoutPlan,
-  type
+  type,
+  fetchWorkoutPlan,
+  workoutId
 }) {
   const [name, setName] = useState(
     editWorkoutPlan ? editWorkoutPlan.name : ""
@@ -40,26 +42,18 @@ export default function CreateWorkoutModal({
   },[editWorkoutPlan])
   const handleClose = () => setOpenModal(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const newWorkoutPlan = { name, description };
 
     if (editWorkoutPlan) {
-      setMyWorkoutPlan((prevState) =>
-        prevState.map((plan) => {
-          if (
-            plan.name === editWorkoutPlan.name &&
-            plan.description === editWorkoutPlan.description
-          ) {
-            return newWorkoutPlan;
-          } else {
-            return plan;
-          }
-        })
-      );
+      await editworkout(newWorkoutPlan,workoutId)
+      // console.log(newWorkoutPlan)
+      fetchWorkoutPlan()
      
     } else {
-      setMyWorkoutPlan((prevState) => [...prevState, newWorkoutPlan]);
+       await createworkout(newWorkoutPlan);
+       fetchWorkoutPlan()
     }
    
     handleClose();
@@ -67,6 +61,12 @@ export default function CreateWorkoutModal({
     setDescription('')
     setEditWorkoutPlan('')
   };
+
+
+
+ 
+
+
 
   return (
     <Modal
