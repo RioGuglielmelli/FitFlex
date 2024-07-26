@@ -159,3 +159,90 @@ export const fetchExerciseDetails = async (id) => {
         return null;
     }
 };
+
+// ******************************************WORKOUTPLAN MANAGEMENT API************************************************************************
+export const getWorkout = async () =>{
+    try {
+        const response = await axios.get('https://wger.de/api/v2/workout',{
+            params: {
+                format: 'json',
+                language: 2,  // English language ID
+            },
+            headers: {
+                'Authorization': `Token ${API_KEY}`,
+            },
+        })
+        const data = await response.data
+        return data.results
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+        return null;
+    }
+}
+
+export const createworkout = async (newWorkoutPlan) =>{
+    try {
+        const response = await axios.post('https://wger.de/api/v2/workout/',newWorkoutPlan,{
+          
+            headers: {
+                'Authorization': `Token ${API_KEY}`,
+            },
+        })
+        return response.data
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+        return null;
+    }
+}
+
+export const editworkout = async (editedWorkoutPlan,id) =>{
+   
+    try {
+        const response = await axios.put(`https://wger.de/api/v2/workout/${id}/`,editedWorkoutPlan,{
+          
+            headers: {
+                'Authorization': `Token ${API_KEY}`,
+            },
+        })
+        return response.data
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+        return null;
+    }
+}
+export const deleteworkout = async (id) =>{
+   
+    try {
+        const response = await axios.delete(`https://wger.de/api/v2/workout/${id}/`,{
+          
+            headers: {
+                'Authorization': `Token ${API_KEY}`,
+            },
+        })
+        return response.data
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+        return null;
+    }
+}
+
+export const getWorkoutById = async (id) =>{
+    try {
+        const response = await axios.get(`https://wger.de/api/v2/workout/${id}/`,{
+            params: {
+                format: 'json',
+                language: 2,  // English language ID
+            },
+            headers: {
+                'Authorization': `Token ${API_KEY}`,
+            },
+        })
+        const data = await response.data
+        return data
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+        return null;
+    }
+}
+
+// ******************************************WORKOUTPLAN MANAGEMENT API************************************************************************

@@ -4,31 +4,45 @@ import "../../styles/workout.css";
 import { Button } from "@mui/material";
 import CreateWorkoutModal from "./components/CreateWorkoutModal";
 import AddIcon from "@mui/icons-material/Add";
+import { getWorkout } from "utils/api";
 
 const PlanManagement = () => {
   // useState Function-------------------------------------------------
   const [openModal, setOpenModal] = useState(false);
-  const [myWorkoutPlan, setMyWorkoutPlan] = useState([]);
   const [editWorkoutPlan, setEditWorkoutPlan] = useState();
 
+  // ---------------------------------------------------------------------------------------------------------------------------
+  const [workoutPlan,setWorkoutPlan] = useState([])
+  const [isLoading,setIsLoading]=useState(false)
+  const [workoutId,setWorkoutId] = useState()
 
-   // Load workout plans from localStorage on component mount
-   useEffect(() => {
-    const storedPlans = localStorage.getItem("myWorkoutPlan");
-    if (storedPlans) {
-      setMyWorkoutPlan(JSON.parse(storedPlans));
-    }
-  }, []);
-
-  // Save workout plans to localStorage whenever myWorkoutPlan changes
-  useEffect(() => {
-    localStorage.setItem("myWorkoutPlan", JSON.stringify(myWorkoutPlan));
-  }, [myWorkoutPlan]);
 
 
   //   modal open Handler--------------------------------------------------
   const handleOpen = () => setOpenModal(true);
+  const fetchWorkoutPlan = async () => {
+      setIsLoading(true)
+      try {
+        const data = await getWorkout()
+        setWorkoutPlan(data)
+      } catch (error) {
+        console.log("Failed to fetch workout plan",error)
+      }finally{
+        setIsLoading(false)
+      }
+    }
 
+  useEffect(()=>{
+   
+  
+    if(workoutPlan.length === 0){
+      fetchWorkoutPlan()
+    }
+  },[workoutPlan])
+
+  if(isLoading){
+    return <p>Loading...</p>
+  }
   return (
     <div className="container">
       <div className="title-container">
@@ -39,15 +53,17 @@ const PlanManagement = () => {
       </div>
 
       <div className="add-card-container">
-        {myWorkoutPlan.length > 0 ? (
-          myWorkoutPlan?.map((item, index) => (
+        {workoutPlan.length > 0 ? (
+          workoutPlan?.map((item, index) => (
             <Card
               {...item}
               key={index}
-              setMyWorkoutPlan={setMyWorkoutPlan}
-              myWorkoutPlan={myWorkoutPlan}
               createModal={handleOpen}
               setEditWorkoutPlan={setEditWorkoutPlan}
+              setWorkoutId={setWorkoutId}
+              workoutId={workoutId}
+        fetchWorkoutPlan={fetchWorkoutPlan}
+
             />
           ))
         ) : (
@@ -59,9 +75,10 @@ const PlanManagement = () => {
       <CreateWorkoutModal
         openModal={openModal}
         setOpenModal={setOpenModal}
-        setMyWorkoutPlan={setMyWorkoutPlan}
         editWorkoutPlan={editWorkoutPlan}
         setEditWorkoutPlan={setEditWorkoutPlan}
+        fetchWorkoutPlan={fetchWorkoutPlan}
+        workoutId={workoutId}
       />
     </div>
   );
