@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_KEY = process.env.REACT_APP_WGER_API_KEY;
 
-//my code starts
+
 export const fetchExercise = async (searchTerm = '') => {
     try {
         const exerciseResponse = await axios.get(`https://wger.de/api/v2/exercise/`, {
@@ -33,7 +33,6 @@ export const fetchExercise = async (searchTerm = '') => {
     }
 }
 
-// Fetch category IDs and names
 export const fetchCategoryNames = async (categoryId) => {
     try {
         const response = await axios.get(`https://wger.de/api/v2/exercisecategory/`, {
@@ -79,9 +78,9 @@ export const fetchExercisesByCategory = async (categoryName) => {
         const filteredExercises = response.data.results.filter(exercise =>
             exercise.category.name === categoryName
         );
-
-        const exerciseNames = filteredExercises.map(exercise => exercise.name);
-        return exerciseNames;
+        return filteredExercises;
+        //const exerciseNames = filteredExercises.map(exercise => exercise.name);
+        //return exerciseNames;
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
         return [];
@@ -101,19 +100,16 @@ export const fetchExercisesByMuscle = async (muscleName) => {
 
         // Filter exercises by muscle name
         const filteredExercises = response.data.results.filter(exercise =>
-            exercise.muscles.some(muscle => muscle.name === muscleName) ||
-            exercise.muscles_secondary.some(muscle => muscle.name === muscleName)
-        );
-
-        const exerciseNames = filteredExercises.map(exercise => exercise.name);
-
-        return exerciseNames;
+            exercise.muscles.some(muscle => muscle.name === muscleName));
+        return filteredExercises;
+        //const exerciseNames = filteredExercises.map(exercise => exercise.name);
+        //return exerciseNames;
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
         return [];
     }
 };
-//my code ends
+
 export const fetchExercises = async (categoryId, limit =50) => {
     try {
         const response = await axios.get(`https://wger.de/api/v2/exercise/`, {
@@ -142,9 +138,9 @@ export const fetchExercises = async (categoryId, limit =50) => {
     }
 };
 
-export const fetchExerciseDetails = async (id) => {
+export const fetchExerciseDetails = async (exerciseId) => {
     try {
-        const response = await axios.get(`https://wger.de/api/v2/exerciseinfo/${id}/`, {
+        const response = await axios.get(`https://wger.de/api/v2/exerciseinfo/${exerciseId}/`, {
             params: {
                 format: 'json',
                 language: 2,  // English language ID
@@ -159,3 +155,4 @@ export const fetchExerciseDetails = async (id) => {
         return null;
     }
 };
+

@@ -3,8 +3,7 @@ import { TextField, Autocomplete, Dialog, DialogTitle, DialogContent, Button } f
 import { fetchExercise, fetchCategoryNames, fetchExercisesByCategory, fetchExerciseDetails, fetchMuscleNames, fetchExercisesByMuscle } from '../utils/api';
 import ExerciseDetails from 'Pages/exercise search/ExerciseDetails';
 import ExerciseList from 'Pages/exercise search/ExerciseList';
-import MuscleExerciseList from 'components/MuscleExerciseList';
-// import { useNavigate } from 'react-router-dom';
+import MuscleExerciseList from 'Pages/exercise search/MuscleExerciseList';
 
 function SearchBar() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -20,41 +19,17 @@ function SearchBar() {
     const [isExerciseDetailsDialogOpen, setIsExerciseDetailsDialogOpen] = useState(false);
     const [isExerciseCategoryListDialogOpen, setIsExerciseCategoryListDialogOpen] = useState(false);
     const [isExerciseMuscleListDialogOpen, setIsExerciseMuscleListDialogOpen] = useState(false);
-    //const navigate = useNavigate();
 
-    /*useEffect(() => {
-        if (searchTerm) {
-            const fetchData = async () => {
-                const exercises = await fetchExercises(searchTerm);
-                setOptions(exercises);
-            };
-            fetchData();
-        }
-    }, [searchTerm]); */
-
-    //my changes start
-    /*useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const exercises = await fetchExercise('');
-                setOptions(Array.isArray(exercises) ? exercises : []);
-            } catch (error) {
-                console.error('Error fetching exercises:', error);
-                setOptions([]);
-            }
-        };
-        fetchData();
-    }, []); */
     useEffect(() => {
         const fetchData = async () => {
             const exercises = await fetchExercise('');
-            setOptions(Array.isArray(exercises) ? exercises : []);
+            setOptions(exercises);
         };
         fetchData();
     }, []);
 
     useEffect(() => {
-        if (searchTerm && Array.isArray(options)) {
+        if (searchTerm) {
             const filtered = options.filter((option) =>
                 option.name.toLowerCase().includes(searchTerm.toLowerCase())
             );
@@ -96,9 +71,9 @@ function SearchBar() {
     // Call fetchExerciseByCategory with the category ID when a category is selected
     const handleCategorySelection = async (categoryName) => {
         try {
-            const exerciseNames = await fetchExercisesByCategory(categoryName);
+            const exercises = await fetchExercisesByCategory(categoryName);
             // Update state with exercise names and open the exercise list dialog
-            setFilteredExercisesByCategory(exerciseNames);
+            setFilteredExercisesByCategory(exercises);
             setIsExerciseCategoryListDialogOpen(true);
         } catch (error) {
             console.error('Error fetching exercises by category:', error);
@@ -109,11 +84,7 @@ function SearchBar() {
         const fetchAndDisplayMuscleNames = async () => {
             try {
                 const fetchedMuscleNames = await fetchMuscleNames();
-                if (Array.isArray(fetchedMuscleNames)) {
-                    setMuscleNames(fetchedMuscleNames);
-                } else {
-                    console.error('Invalid muscle names data:', fetchedMuscleNames);
-                }
+                setMuscleNames(fetchedMuscleNames);
             } catch (error) {
                 console.error('Error fetching and displaying muscle names:', error);
             }
@@ -122,19 +93,12 @@ function SearchBar() {
     }, []);
 
     // Call fetchExerciseByMuscle with the muscle ID when a muscle is selected
-    const handleMuscleSelection = async (muscleName) => {
+    const handleMuscleSelection = async (event, newValue) => {
+        setSelectedMuscle(newValue);
         try {
-            setSelectedMuscle(muscleName); // Set the selected muscle name
-
-            const exerciseNames = await fetchExercisesByMuscle(muscleName);
-            if (Array.isArray(exerciseNames)) {
-                // Update state with fetched exercise names and open the exercise list dialog
-                setFilteredExercisesByMuscle(exerciseNames);
-                setIsExerciseMuscleListDialogOpen(true);
-            } else {
-                // Handle the case where the exerciseNames data is not an array
-                console.error('Invalid exercise names data:', exerciseNames);
-            }
+            const exercises = await fetchExercisesByMuscle(newValue);
+            setFilteredExercisesByMuscle(exercises);
+            setIsExerciseMuscleListDialogOpen(true);
         } catch (error) {
             console.error('Error fetching exercises by muscle:', error);
         }
@@ -174,7 +138,8 @@ function SearchBar() {
             <Dialog open={isExerciseCategoryListDialogOpen} onClose={() => setIsExerciseCategoryListDialogOpen(false)}>
                 <DialogTitle>{selectedCategory ? `Exercises for ${selectedCategory.name}` : 'Exercises List'}</DialogTitle>
                 <DialogContent>
-                    {filteredExercisesByCategory && <ExerciseList exerciseNames={filteredExercisesByCategory} />}
+                    {filteredExercisesByCategory && (
+                        <ExerciseList exerciseNames={filteredExercisesByCategory.map(exercise => exercise.name)} exercises={filteredExercisesByCategory} />)}
                     <Button onClick={() => setIsExerciseCategoryListDialogOpen(false)}>Close</Button>
                 </DialogContent>
             </Dialog>
@@ -182,7 +147,8 @@ function SearchBar() {
             <Dialog open={isExerciseMuscleListDialogOpen} onClose={() => setIsExerciseMuscleListDialogOpen(false)}>
                 <DialogTitle>{selectedMuscle ? `Exercises for ${selectedMuscle.name}` : 'Exercises List'}</DialogTitle>
                 <DialogContent>
-                    {filteredExercisesByMuscle && <MuscleExerciseList exerciseNames={filteredExercisesByMuscle} />}
+                    {filteredExercisesByMuscle && (
+                        <MuscleExerciseList exerciseNames={filteredExercisesByMuscle.map(exercise => exercise.name)} exercises={filteredExercisesByMuscle} />)}
                     <Button onClick={() => setIsExerciseMuscleListDialogOpen(false)}>Close</Button>
                 </DialogContent>
             </Dialog>

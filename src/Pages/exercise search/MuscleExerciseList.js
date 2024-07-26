@@ -7,13 +7,9 @@ const MuscleExerciseList = ({ exerciseNames }) => {
     const [isExerciseDetailsDialogOpen, setIsExerciseDetailsDialogOpen] = useState(false);
     const [selectedExerciseId, setSelectedExerciseId] = useState(null); // Track the selected exercise ID
     const [options, selectedOption] = useState([]);
-    const handleExerciseSelection = async (selectedExercise) => {
+    const handleExerciseSelection = async (exerciseId) => {
         try {
-            const exerciseDetails = await fetchExerciseDetails(selectedExercise.id);
-            setSelectedExerciseDetails({
-                ...selectedExerciseDetails,
-                [selectedOption.id]: exerciseDetails,
-            });
+            const exerciseDetails = await fetchExerciseDetails(exerciseId);
             setSelectedExerciseDetails(exerciseDetails);
             setIsExerciseDetailsDialogOpen(true); // Open exercise details dialog
         } catch (error) {
@@ -23,35 +19,32 @@ const MuscleExerciseList = ({ exerciseNames }) => {
 
     return (
         <div>
-            <h3>Exercises:</h3>
+            {/*<h3>Exercises:</h3>
             {exerciseNames.map((exercise, index) => (
                 <li key={index}>
-                    <Button onClick={() => handleExerciseSelection({ id: index, name: exercise })}>
-                        {exercise}
+                    <Button onClick={() => handleExerciseSelection(exercise.id)}>
+                        {exercise.name}
                     </Button>
                 </li>
-            ))}
-            {/*<h3>Exercises:</h3>
+            ))}*/}
+            <h3>Exercises:</h3>
             {exerciseNames.map((exercise) => {
-                const exerciseId = exercise.id; // Use existing ID or generate a unique ID
                 return (
-                    <li key={exerciseId}>
-                        <Button onClick={() => handleExerciseSelection({ id: exerciseId, name: exercise.name })}>
+                    <li key={exercise.id}>
+                        <Button onClick={() => handleExerciseSelection(exercise.id )}>
                             {exercise.name}
                         </Button>
                     </li>
                 );
-            })}*/}
+            })}
             <Dialog open={isExerciseDetailsDialogOpen} onClose={() => setIsExerciseDetailsDialogOpen(false)}>
-                {selectedExerciseId && (
                     <>
                         <DialogTitle>Exercise Details</DialogTitle>
                         <DialogContent>
-                            <ExerciseDetails exercise={selectedExerciseDetails[selectedExerciseId]} />
+                            {selectedExerciseId && <ExerciseDetails exercise={selectedExerciseDetails} />}
                             <Button onClick={() => setIsExerciseDetailsDialogOpen(false)}>Close</Button>
                         </DialogContent>
                     </>
-                )}
             </Dialog>
         </div>
     );

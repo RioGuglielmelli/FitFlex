@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent } from '@mui/material';
 import { fetchExerciseDetails } from 'utils/api';
 import ExerciseDetails from 'Pages/exercise search/ExerciseDetails';
-const ExerciseList = ({ exerciseNames }) => {
+const ExerciseList = ({ exerciseNames, exercises }) => {
     const [selectedExerciseDetails, setSelectedExerciseDetails] = useState(null);
     const [isExerciseDetailsDialogOpen, setIsExerciseDetailsDialogOpen] = useState(false);
-    const [setSelectedExerciseId] = useState(null); // Track the selected exercise ID
-    const [options] = useState([]);
-    const handleExerciseSelection = async (selectedExercise) => {
+
+    const handleExerciseSelection = async (exerciseId) => {
         try {
-            const exerciseDetails = await fetchExerciseDetails(selectedExercise.id);
+            const exerciseDetails = await fetchExerciseDetails(exerciseId);
             setSelectedExerciseDetails(exerciseDetails);
             setIsExerciseDetailsDialogOpen(true); // Open exercise details dialog
         } catch (error) {
@@ -20,10 +19,17 @@ const ExerciseList = ({ exerciseNames }) => {
     return (
         <div>
             <h3>Exercises:</h3>
-            {exerciseNames.map((exercise, index) => (
+            {/*{exerciseNames.map((exercise, index) => (
                 <li key={index}>
-                    <Button onClick={() => handleExerciseSelection({ id: index, name: exercise })}>
+                    <Button onClick={() => handleExerciseSelection(index)}>
                         {exercise}
+                    </Button>
+                </li>
+            ))}*/}
+            {exercises.map((exercise) => (
+                <li key={exercise.id}>
+                    <Button onClick={() => handleExerciseSelection(exercise.id)}>
+                        {exercise.name}
                     </Button>
                 </li>
             ))}
