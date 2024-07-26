@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
-import { Button, Dialog, DialogTitle, DialogContent } from '@mui/material';
+import { Button, Autocomplete, TextField, Dialog, DialogTitle, DialogContent } from '@mui/material';
 import { fetchExerciseDetails } from 'utils/api';
 import ExerciseDetails from 'Pages/exercise search/ExerciseDetails';
-const ExerciseList = ({ exerciseNames }) => {
+const MuscleExerciseList = ({ exerciseNames }) => {
     const [selectedExerciseDetails, setSelectedExerciseDetails] = useState(null);
     const [isExerciseDetailsDialogOpen, setIsExerciseDetailsDialogOpen] = useState(false);
-    const [setSelectedExerciseId] = useState(null); // Track the selected exercise ID
-    const [options] = useState([]);
+    const [selectedExerciseId, setSelectedExerciseId] = useState(null); // Track the selected exercise ID
+    const [options, selectedOption] = useState([]);
     const handleExerciseSelection = async (selectedExercise) => {
         try {
             const exerciseDetails = await fetchExerciseDetails(selectedExercise.id);
+            setSelectedExerciseDetails({
+                ...selectedExerciseDetails,
+                [selectedOption.id]: exerciseDetails,
+            });
             setSelectedExerciseDetails(exerciseDetails);
             setIsExerciseDetailsDialogOpen(true); // Open exercise details dialog
         } catch (error) {
@@ -27,13 +31,23 @@ const ExerciseList = ({ exerciseNames }) => {
                     </Button>
                 </li>
             ))}
-
+            {/*<h3>Exercises:</h3>
+            {exerciseNames.map((exercise) => {
+                const exerciseId = exercise.id; // Use existing ID or generate a unique ID
+                return (
+                    <li key={exerciseId}>
+                        <Button onClick={() => handleExerciseSelection({ id: exerciseId, name: exercise.name })}>
+                            {exercise.name}
+                        </Button>
+                    </li>
+                );
+            })}*/}
             <Dialog open={isExerciseDetailsDialogOpen} onClose={() => setIsExerciseDetailsDialogOpen(false)}>
-                {selectedExerciseDetails && (
+                {selectedExerciseId && (
                     <>
                         <DialogTitle>Exercise Details</DialogTitle>
                         <DialogContent>
-                            <ExerciseDetails exercise={selectedExerciseDetails} />
+                            <ExerciseDetails exercise={selectedExerciseDetails[selectedExerciseId]} />
                             <Button onClick={() => setIsExerciseDetailsDialogOpen(false)}>Close</Button>
                         </DialogContent>
                     </>
@@ -43,4 +57,4 @@ const ExerciseList = ({ exerciseNames }) => {
     );
 };
 
-export default ExerciseList;
+export default MuscleExerciseList;

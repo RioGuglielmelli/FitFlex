@@ -3,13 +3,13 @@ import axios from 'axios';
 const API_KEY = process.env.REACT_APP_WGER_API_KEY;
 
 //my code starts
-export const fetchExercise = async (searchTerm = '', language = '2', page = 1) => {
+export const fetchExercise = async (searchTerm = '') => {
     try {
         const exerciseResponse = await axios.get(`https://wger.de/api/v2/exercise/`, {
             params: {
                 format: 'json',
                 language: 2,  // English language ID
-                page,
+                //page,
             },
             headers: {
                 'Authorization': `Token ${API_KEY}`,
@@ -33,47 +33,8 @@ export const fetchExercise = async (searchTerm = '', language = '2', page = 1) =
     }
 }
 
-export const fetchCategoryNames = async (categoryId) => {
-    try {
-        const response = await axios.get(`https://wger.de/api/v2/exerciseinfo/`, {
-            params: {
-                category: categoryId,
-            },
-            headers: {
-                'Authorization': `Token ${API_KEY}`,
-            },
-        });
-
-        // Extract category names from the response
-        const categoryNames = response.data.results.map(category => category.name);
-
-        return categoryNames;
-    } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-        return [];
-    }
-};
-
-export const fetchMuscleNames = async () => {
-    try {
-        const response = await axios.get(`https://wger.de/api/v2/muscle/`, {
-            headers: {
-                'Authorization': `Token ${API_KEY}`,
-            },
-        });
-
-        // Extract muscle names from the response
-        const muscleNames = response.data.results.map(muscle => muscle.name);
-
-        return muscleNames;
-    } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-        return [];
-    }
-};
-
 // Fetch category IDs and names
-export const fetchCategoryDetails = async (categoryId) => {
+export const fetchCategoryNames = async (categoryId) => {
     try {
         const response = await axios.get(`https://wger.de/api/v2/exercisecategory/`, {
             headers: {
@@ -87,14 +48,79 @@ export const fetchCategoryDetails = async (categoryId) => {
         return [];
     }
 };
+
+export const fetchMuscleNames = async (muscleId) => {
+    try {
+        const response = await axios.get(`https://wger.de/api/v2/muscle/`, {
+            headers: {
+                'Authorization': `Token ${API_KEY}`,
+            },
+        });
+
+        return response.data.results;
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+        return [];
+    }
+};
+
+export const fetchExercisesByCategory = async (categoryName) => {
+    try {
+        const response = await axios.get(`https://wger.de/api/v2/exerciseinfo/`, {
+            params: {
+                language: 2, // English language ID
+            },
+            headers: {
+                'Authorization': `Token ${API_KEY}`,
+            },
+        });
+
+        // Filter exercises by category name
+        const filteredExercises = response.data.results.filter(exercise =>
+            exercise.category.name === categoryName
+        );
+
+        const exerciseNames = filteredExercises.map(exercise => exercise.name);
+        return exerciseNames;
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+        return [];
+    }
+};
+
+export const fetchExercisesByMuscle = async (muscleName) => {
+    try {
+        const response = await axios.get(`https://wger.de/api/v2/exerciseinfo/`, {
+            params: {
+                language: 2, // English language ID
+            },
+            headers: {
+                'Authorization': `Token ${API_KEY}`,
+            },
+        });
+
+        // Filter exercises by muscle name
+        const filteredExercises = response.data.results.filter(exercise =>
+            exercise.muscles.some(muscle => muscle.name === muscleName) ||
+            exercise.muscles_secondary.some(muscle => muscle.name === muscleName)
+        );
+
+        const exerciseNames = filteredExercises.map(exercise => exercise.name);
+
+        return exerciseNames;
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+        return [];
+    }
+};
 //my code ends
-export const fetchExercises = async (categoryId, page = 1, limit =10) => {
+export const fetchExercises = async (categoryId, limit =50) => {
     try {
         const response = await axios.get(`https://wger.de/api/v2/exercise/`, {
             params: {
                 format: 'json',
                 language: 2,  // English language ID
-                page,
+                //page,
                 category: categoryId,
                 limit,
             },
@@ -107,20 +133,7 @@ export const fetchExercises = async (categoryId, page = 1, limit =10) => {
             exercise.language === 2 &&
             exercise.id !== 2145 &&
             exercise.id !== 2157
-        );
-
-        return {
-            ...response.data,
-            results: filteredExercises
-        }; */
-        if (!response.data.results || response.data.results.length === 0) {
-            // No more results, stop loading
-            return { results: [], next: null };
-        }
-
-        if (!response.data.next) {
-            return { results: [], next: null };
-        }
+        );*/
 
         return response.data;
     } catch (error) {
