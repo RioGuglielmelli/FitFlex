@@ -1,6 +1,31 @@
 import axios from 'axios';
 
 const API_KEY = process.env.REACT_APP_WGER_API_KEY;
+const API_BASE_URL = 'http://localhost:5000/api';
+
+// User registration
+export const registerUser = async (email, password, firstName, lastName) => {
+    try {
+        const response = await axios.post(`${API_BASE_URL}/register`, { email, password, firstName, lastName });
+        return response.data;
+    } catch (error) {
+        console.error('There was a problem with the registration operation:', error);
+        throw error;
+    }
+};
+
+// User login
+export const loginUser = async (email, password) => {
+    try {
+        const response = await axios.post(`${API_BASE_URL}/login`, { email, password });
+        localStorage.setItem('jwtToken', response.data.token);
+        return response.data;
+    } catch (error) {
+        console.error('There was a problem with the login operation:', error);
+        throw error;
+    }
+};
+
 
 
 export const fetchExercise = async (searchTerm = '') => {
@@ -182,7 +207,7 @@ export const getWorkout = async () =>{
 export const createworkout = async (newWorkoutPlan) =>{
     try {
         const response = await axios.post('https://wger.de/api/v2/workout/',newWorkoutPlan,{
-          
+
             headers: {
                 'Authorization': `Token ${API_KEY}`,
             },
@@ -195,10 +220,10 @@ export const createworkout = async (newWorkoutPlan) =>{
 }
 
 export const editworkout = async (editedWorkoutPlan,id) =>{
-   
+
     try {
         const response = await axios.put(`https://wger.de/api/v2/workout/${id}/`,editedWorkoutPlan,{
-          
+
             headers: {
                 'Authorization': `Token ${API_KEY}`,
             },
@@ -210,10 +235,10 @@ export const editworkout = async (editedWorkoutPlan,id) =>{
     }
 }
 export const deleteworkout = async (id) =>{
-   
+
     try {
         const response = await axios.delete(`https://wger.de/api/v2/workout/${id}/`,{
-          
+
             headers: {
                 'Authorization': `Token ${API_KEY}`,
             },
