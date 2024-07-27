@@ -5,11 +5,15 @@ const bcrypt = require('bcryptjs');
 exports.register = async (req, res) => {
     try {
         const { email, password, firstName, lastName } = req.body;
+        if (!email || !password || !firstName || !lastName) {
+            throw new Error('Missing required fields');
+        }
         const user = new User({ email, password, firstName, lastName });
         await user.save();
         res.status(201).send({ message: 'User registered successfully' });
     } catch (error) {
-        res.status(400).send({ error: 'Registration failed' });
+        console.error('Registration error:', error);
+        res.status(400).send({ error: 'Registration failed', details: error.message });
     }
 };
 
@@ -27,6 +31,7 @@ exports.login = async (req, res) => {
         const token = jwt.sign({ userId: user._id }, 'secret_key', { expiresIn: '1h' });
         res.send({ token });
     } catch (error) {
+        console.error('Login error:', error);
         res.status(500).send({ error: 'Login failed' });
     }
 };
