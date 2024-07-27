@@ -11,7 +11,7 @@ function SearchBar() {
     const [filteredOptions, setFilteredOptions] = useState([]);
     const [selectedExerciseDetails, setSelectedExerciseDetails] = useState(null);
     const [categoryNames, setCategoryNames] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [selectedCategory] = useState(null);
     const [filteredExercisesByCategory, setFilteredExercisesByCategory] = useState(null);
     const [muscleNames, setMuscleNames] = useState([]);
     const [selectedMuscle, setSelectedMuscle] = useState(null);
@@ -84,7 +84,7 @@ function SearchBar() {
         const fetchAndDisplayMuscleNames = async () => {
             try {
                 const fetchedMuscleNames = await fetchMuscleNames();
-                setMuscleNames(fetchedMuscleNames);
+                setMuscleNames(fetchedMuscleNames.map(muscle => ({ id: muscle.id, name: muscle.name })));
             } catch (error) {
                 console.error('Error fetching and displaying muscle names:', error);
             }
@@ -96,7 +96,7 @@ function SearchBar() {
     const handleMuscleSelection = async (event, newValue) => {
         setSelectedMuscle(newValue);
         try {
-            const exercises = await fetchExercisesByMuscle(newValue);
+            const exercises = await fetchExercisesByMuscle(newValue.id);
             setFilteredExercisesByMuscle(exercises);
             setIsExerciseMuscleListDialogOpen(true);
         } catch (error) {
@@ -123,7 +123,7 @@ function SearchBar() {
             <Autocomplete
                 options={muscleNames}
                 getOptionLabel={(option) => option.name}
-                onChange={(event, newValue) => handleMuscleSelection(newValue)}
+                onChange={handleMuscleSelection}
                 renderInput={(params) => <TextField {...params} label="Filter by Muscle Group" variant="outlined" />}
             />
 
@@ -148,7 +148,7 @@ function SearchBar() {
                 <DialogTitle>{selectedMuscle ? `Exercises for ${selectedMuscle.name}` : 'Exercises List'}</DialogTitle>
                 <DialogContent>
                     {filteredExercisesByMuscle && (
-                        <MuscleExerciseList exerciseNames={filteredExercisesByMuscle.map(exercise => exercise.name)} exercises={filteredExercisesByMuscle} />)}
+                        <MuscleExerciseList exerciseNames={filteredExercisesByMuscle} />)}
                     <Button onClick={() => setIsExerciseMuscleListDialogOpen(false)}>Close</Button>
                 </DialogContent>
             </Dialog>

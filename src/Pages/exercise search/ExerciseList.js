@@ -16,16 +16,13 @@ const ExerciseList = ({ exerciseNames, exercises }) => {
         }
     };
 
+    if (!exerciseNames || exerciseNames.length === 0) {
+        return <p>No exercises found for this muscle.</p>;
+    }
+
     return (
         <div>
             <h3>Exercises:</h3>
-            {/*{exerciseNames.map((exercise, index) => (
-                <li key={index}>
-                    <Button onClick={() => handleExerciseSelection(index)}>
-                        {exercise}
-                    </Button>
-                </li>
-            ))}*/}
             {exercises.map((exercise) => (
                 <li key={exercise.id}>
                     <Button onClick={() => handleExerciseSelection(exercise.id)}>

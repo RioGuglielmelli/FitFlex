@@ -36,6 +36,9 @@ export const fetchExercise = async (searchTerm = '') => {
 export const fetchCategoryNames = async (categoryId) => {
     try {
         const response = await axios.get(`https://wger.de/api/v2/exercisecategory/`, {
+            params: {
+                language: 2, // English language ID
+            },
             headers: {
                 'Authorization': `Token ${API_KEY}`,
             },
@@ -48,9 +51,12 @@ export const fetchCategoryNames = async (categoryId) => {
     }
 };
 
-export const fetchMuscleNames = async (muscleId) => {
+export const fetchMuscleNames = async () => {
     try {
         const response = await axios.get(`https://wger.de/api/v2/muscle/`, {
+            params: {
+                language: 2, // English language ID
+            },
             headers: {
                 'Authorization': `Token ${API_KEY}`,
             },
@@ -79,15 +85,13 @@ export const fetchExercisesByCategory = async (categoryName) => {
             exercise.category.name === categoryName
         );
         return filteredExercises;
-        //const exerciseNames = filteredExercises.map(exercise => exercise.name);
-        //return exerciseNames;
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
         return [];
     }
 };
 
-export const fetchExercisesByMuscle = async (muscleName) => {
+export const fetchExercisesByMuscle = async (muscleId) => {
     try {
         const response = await axios.get(`https://wger.de/api/v2/exerciseinfo/`, {
             params: {
@@ -98,12 +102,11 @@ export const fetchExercisesByMuscle = async (muscleName) => {
             },
         });
 
-        // Filter exercises by muscle name
         const filteredExercises = response.data.results.filter(exercise =>
-            exercise.muscles.some(muscle => muscle.name === muscleName));
+            exercise.muscles.some(muscle => muscle.id === muscleId)
+        );
         return filteredExercises;
-        //const exerciseNames = filteredExercises.map(exercise => exercise.name);
-        //return exerciseNames;
+
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
         return [];
