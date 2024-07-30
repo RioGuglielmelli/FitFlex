@@ -4,14 +4,61 @@ import { Line } from 'react-chartjs-2';
 import 'chartjs-adapter-moment';
 import { DatePicker } from '@mui/lab';
 import { loadData, saveData } from '../utils/localStorage';
-import '../styles/Dashboard.css'; // Import the CSS file
+import '../styles/Dashboard.css';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+} from 'chart.js';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+
+// Register Chart.js components
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+);
+
+const localizer = momentLocalizer(moment);
 
 function Dashboard() {
     const [timeFrame, setTimeFrame] = useState('week');
-    const [chartData, setChartData] = useState({ labels: [], datasets: [] });
+    const [chartData, setChartData] = useState({
+        labels: [],
+        datasets: [{
+            label: 'Weight',
+            data: [],
+            fill: false,
+            borderColor: 'blue'
+        }]
+    });
     const [date, setDate] = useState(new Date());
     const [weight, setWeight] = useState('');
     const [weights, setWeights] = useState(loadData('weights') || []);
+    const myEvents = [
+        {
+            title: 'Big Meeting',
+            allDay: true,
+            start: new Date(2023, 6, 0),
+            end: new Date(2023, 6, 1),
+        },
+        {
+            title: 'Vacation',
+            start: new Date(2023, 6, 7),
+            end: new Date(2023, 6, 10),
+        }
+    ];
 
     const updateChartData = () => {
         const filteredWeights = weights.filter(entry => {
@@ -24,7 +71,7 @@ function Dashboard() {
                 case 'sixMonths':
                     return entryDate > new Date(Date.now() - 6 * 30 * 24 * 60 * 60 * 1000);
                 case 'year':
-                    return entryDate > new Date(Date.now() - 12 * 30 * 24 * 60 * 1000);
+                    return entryDate > new Date(Date.now() - 12 * 30 * 24 * 60 * 60 * 1000);
                 default:
                     return true;
             }
@@ -116,13 +163,15 @@ function Dashboard() {
                 <Grid item xs={12} md={8}>
                     <Paper className="calendar-container" elevation={3}>
                         <Typography variant="h6">Workout Calendar</Typography>
-                        {/* Insert your calendar component here */}
-                    </Paper>
-                </Grid>
-                <Grid item xs={12} md={4}>
-                    <Paper className="favorites-container" elevation={3}>
-                        <Typography variant="h6">Favorite Exercises</Typography>
-                        {/* List or tiles of favorite exercises */}
+                        <div style={{ height: 500, margin: '20px' }}>
+                            <Calendar
+                                localizer={localizer}
+                                events={myEvents}
+                                startAccessor="start"
+                                endAccessor="end"
+                                style={{ height: '100%' }}
+                            />
+                        </div>
                     </Paper>
                 </Grid>
             </Grid>
