@@ -48,13 +48,15 @@ export const loginUser = async (email, password) => {
 
 
 
-export const fetchExercise = async (searchTerm = '') => {
+export const fetchExercise = async (searchTerm = '', limit = 50, categoryId) => {
     try {
         const exerciseResponse = await axios.get(`https://wger.de/api/v2/exercise/`, {
             params: {
                 format: 'json',
                 language: 2,  // English language ID
                 //page,
+                category: categoryId,
+                limit,
             },
             headers: {
                 'Authorization': `Token ${API_KEY}`,
@@ -114,11 +116,13 @@ export const fetchMuscleNames = async () => {
     }
 };
 
-export const fetchExercisesByCategory = async (categoryName) => {
+export const fetchExercisesByCategory = async (categoryName, categoryId, limit = 50) => {
     try {
         const response = await axios.get(`https://wger.de/api/v2/exerciseinfo/`, {
             params: {
                 language: 2, // English language ID
+                category: categoryId,
+                limit,
             },
             headers: {
                 'Authorization': `Token ${API_KEY}`,
@@ -136,11 +140,13 @@ export const fetchExercisesByCategory = async (categoryName) => {
     }
 };
 
-export const fetchExercisesByMuscle = async (muscleId) => {
+export const fetchExercisesByMuscle = async (muscleId, categoryId, limit = 50) => {
     try {
         const response = await axios.get(`https://wger.de/api/v2/exerciseinfo/`, {
             params: {
                 language: 2, // English language ID
+                category: categoryId,
+                limit,
             },
             headers: {
                 'Authorization': `Token ${API_KEY}`,
@@ -186,12 +192,14 @@ export const fetchExercises = async (categoryId, limit =50) => {
     }
 };
 
-export const fetchExerciseDetails = async (exerciseId) => {
+export const fetchExerciseDetails = async (exerciseId, limit = 50, categoryId) => {
     try {
         const response = await axios.get(`https://wger.de/api/v2/exerciseinfo/${exerciseId}/`, {
             params: {
                 format: 'json',
                 language: 2,  // English language ID
+                category: categoryId,
+                limit,
             },
             headers: {
                 'Authorization': `Token ${API_KEY}`,
