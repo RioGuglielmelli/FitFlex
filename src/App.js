@@ -15,7 +15,7 @@ import NotFoundPage from './Pages/NotFoundPage';
 import Footer from './Pages/Footer';
 import symbol from './images/symbol.svg';
 import name from './images/FitFlexName.svg';
-import ProtectedRoute from './components/ProtectedRoute';
+// import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -43,11 +43,11 @@ function App() {
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/dashboard" element={<ProtectedRoute element={Dashboard} />} />
-                <Route path="/exercises" element={<ProtectedRoute element={Exercises} />} />
-                <Route path="/exercises/:id" element={<ProtectedRoute element={ExerciseDetails} />} />
-                <Route path="/work-plan-management" element={<ProtectedRoute element={PlanManagement} />} />
-                <Route path="/work-plan-management/:id" element={<ProtectedRoute element={PlanDetails} />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/exercises" element={<Exercises />} />
+                <Route path="/exercises/:id" element={<ExerciseDetails />} />
+                <Route path="/work-plan-management" element={<PlanManagement />} />
+                <Route path="/work-plan-management/:id" element={<PlanDetails />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </Box>

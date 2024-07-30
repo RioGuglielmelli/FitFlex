@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import '../styles/Login-Register.css';
 import FitFlexName from '../images/FitFlexName.svg';
 import symbol from '../images/symbol.svg';
+import { AuthContext } from '../context/AuthContext';
+import { loginUser } from '../utils/api';
 
 const Login = () => {
     const [formData, setFormData] = useState({ email: '', password: '' });
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
+    const { saveTokens } = useContext(AuthContext);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,20 +21,13 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:5000/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
-            const data = await response.json();
-            if (response.ok) {
-                localStorage.setItem('accessToken', data.token);
+            const response = await loginUser(formData.email, formData.password);
+            if (response) {
+                saveTokens(response.token);
                 setMessage('Login successful! Redirecting to dashboard...');
                 setTimeout(() => navigate('/dashboard'), 2000);
             } else {
-                setMessage(data.error || 'Login failed');
+                setMessage('Login failed');
             }
         } catch (error) {
             console.error('Error:', error);

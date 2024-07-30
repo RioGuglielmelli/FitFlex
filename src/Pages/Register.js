@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import '../styles/Login-Register.css';
 import FitFlexName from '../images/FitFlexName.svg';
 import symbol from '../images/symbol.svg';
+import { registerUser } from '../utils/api';
 
 const Register = () => {
     const [formData, setFormData] = useState({ email: '', password: '', firstName: '', lastName: '' });
@@ -18,19 +19,12 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:5000/api/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
-            const data = await response.json();
-            if (response.ok) {
+            const response = await registerUser(formData.email, formData.password, formData.firstName, formData.lastName);
+            if (response) {
                 setMessage('Registration successful! Redirecting to login...');
                 setTimeout(() => navigate('/login'), 2000);
             } else {
-                setMessage(data.error || 'Registration failed');
+                setMessage('Registration failed');
             }
         } catch (error) {
             console.error('Error:', error);

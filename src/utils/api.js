@@ -1,8 +1,28 @@
 import axios from 'axios';
+import { getAccessToken, refreshToken } from './localStorage';
 
 const API_KEY = process.env.REACT_APP_WGER_API_KEY;
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://wger.de/api/v2/';
 
+// Axios instance for Wger API
+const wgerApi = axios.create({
+    baseURL: 'https://wger.de/api/v2/',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+});
+
+// Interceptor to add the Authorization header
+wgerApi.interceptors.request.use(
+    async (config) => {
+        let token = getAccessToken();
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
 // User registration
 export const registerUser = async (email, password, firstName, lastName) => {
     try {
