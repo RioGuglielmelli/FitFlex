@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent } from '@mui/material';
 import { fetchExerciseDetails } from 'utils/api';
 import ExerciseDetails from 'Pages/exercise search/ExerciseDetails';
-const ExerciseList = ({ exerciseNames, exercises }) => {
+const ExerciseList = ({ exerciseNames, exercises,setSelectedExercise,selectedExercise  }) => {
     const [selectedExerciseDetails, setSelectedExerciseDetails] = useState(null);
     const [isExerciseDetailsDialogOpen, setIsExerciseDetailsDialogOpen] = useState(false);
 
@@ -36,7 +36,7 @@ const ExerciseList = ({ exerciseNames, exercises }) => {
                     <>
                         <DialogTitle>Exercise Details</DialogTitle>
                         <DialogContent>
-                            <ExerciseDetails exercise={selectedExerciseDetails} />
+                            <ExerciseDetails exercise={selectedExerciseDetails} setSelectedExercise={setSelectedExercise}  pageFrom="exercises" selectedExercise={selectedExercise}/>
                             <Button onClick={() => setIsExerciseDetailsDialogOpen(false)}>Close</Button>
                         </DialogContent>
                     </>

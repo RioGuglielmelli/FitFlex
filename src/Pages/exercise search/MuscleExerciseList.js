@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent } from '@mui/material';
 import { fetchExerciseDetails } from 'utils/api';
 import ExerciseDetails from 'Pages/exercise search/ExerciseDetails';
-const MuscleExerciseList = ({ exerciseNames }) => {
+const MuscleExerciseList = ({ exerciseNames ,setSelectedExercise,selectedExercise}) => {
     const [selectedExerciseDetails, setSelectedExerciseDetails] = useState(null);
     const [isExerciseDetailsDialogOpen, setIsExerciseDetailsDialogOpen] = useState(false);
    const handleExerciseSelection = async (exerciseId) => {
@@ -32,7 +32,7 @@ const MuscleExerciseList = ({ exerciseNames }) => {
                     <>
                         <DialogTitle>Exercise Details</DialogTitle>
                         <DialogContent>
-                            {setSelectedExerciseDetails && <ExerciseDetails exercise={selectedExerciseDetails} />}
+                            {setSelectedExerciseDetails && <ExerciseDetails exercise={selectedExerciseDetails} setSelectedExercise={setSelectedExercise}  pageFrom="exercises" selectedExercise={selectedExercise}/>}
                             <Button onClick={() => setIsExerciseDetailsDialogOpen(false)}>Close</Button>
                         </DialogContent>
                     </>

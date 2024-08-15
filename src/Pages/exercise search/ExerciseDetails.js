@@ -1,10 +1,19 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography,Button } from '@mui/material';
 import '../../styles/Exercises.css';
 
-function ExerciseDetails({ exercise }) {
+function ExerciseDetails({ exercise,pageFrom,setSelectedExercise,selectedExercise }) {
+    const addExercises = (exercise) => {
+        setSelectedExercise((prevState) => {
+            return [...prevState,exercise]
+        })
+    }
+
+    const isExerciseAdded = () => {
+        return !!selectedExercise.find((item)=>item.uuid === exercise.uuid)
+    }
     return (
-        <Box p={3}>
+        <Box p={3} sx={{position:"relative"}}>
             <Typography id="exercise-details-title" variant="h4" component="h2">
                 {exercise.name}
             </Typography>
@@ -22,6 +31,17 @@ function ExerciseDetails({ exercise }) {
             ) : (
                 <Typography>No images available</Typography>
             )}
+            {
+           
+            pageFrom === 'exercises' &&  (
+                <Box sx={{position:"absolute",bottom:0,right:10}}>
+                    {
+                        isExerciseAdded() ? (<Button onClick={()=>alert("This Exercise is already added")}>ADDED</Button>) : (<Button onClick={()=>addExercises(exercise)}>ADD</Button>)
+                    }
+                    
+                </Box>
+            )
+            }
         </Box>
     );
 }

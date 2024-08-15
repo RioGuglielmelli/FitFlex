@@ -87,7 +87,7 @@ function Exercises() {
                         <CloseIcon />
                     </IconButton>
                     {selectedExercise ? (
-                        <ExerciseDetails exercise={selectedExercise} />
+                        <ExerciseDetails exercise={selectedExercise}/>
                     ) : (
                         <CircularProgress />
                     )}

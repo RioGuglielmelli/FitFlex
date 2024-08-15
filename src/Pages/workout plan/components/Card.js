@@ -2,16 +2,13 @@ import React, { useState } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { Box } from "@mui/material";
+import { Box, Modal, IconButton, CircularProgress } from "@mui/material";
 import DialogBox from "./DialogBox";
 import { Link } from "react-router-dom";
 import { deleteworkout } from "utils/api";
-
-const options = ["Edit", "Delete"];
 
 export default function BasicCard({
   id,
@@ -22,10 +19,15 @@ export default function BasicCard({
   type,
   setWorkoutId,
   workoutId,
-  fetchWorkoutPlan
+  fetchWorkoutPlan,
+  uuid,
+  selectedExercise,
+  setSelectedExercise,
+  handleOpenExercise
 }) {
   // menu items and functions------------------------------------------
   const [anchorEl, setAnchorEl] = useState(null);
+
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -36,12 +38,20 @@ export default function BasicCard({
 
   const handleSelect = (option) => {
     if (option === "Edit") {
-      setWorkoutId(id)
-      createModal()
+      setWorkoutId(id);
+      createModal();
       setEditWorkoutPlan({ name, description });
     } else {
-      handleClickOpen();
-      setWorkoutId(id)
+
+      if (type === "exercise") {
+        const removeExercise = selectedExercise?.filter((exercise)=>exercise.uuid !== uuid)
+        setSelectedExercise(removeExercise)
+       
+      }else{
+         handleClickOpen();
+      setWorkoutId(id);
+      }
+     
     }
     handleClose();
   };
@@ -57,11 +67,14 @@ export default function BasicCard({
     setDialogOpen(true);
   };
 
-  const deleteWoroutHandler = async() => {
-   await deleteworkout(workoutId)
-   fetchWorkoutPlan()
+  const deleteWorkoutHandler = async () => {
+    await deleteworkout(workoutId);
+    fetchWorkoutPlan();
     handleDialogClose();
   };
+
+  // Filter options based on type
+  const filteredOptions = type === "exercise" ? ["Delete"] : ["Edit", "Delete"];
 
   return (
     <Card
@@ -77,27 +90,27 @@ export default function BasicCard({
           boxShadow:
             "rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px",
         },
-        mt:4
+        mt: 4,
       }}
     >
-      {
-        type === 'exercise' ? (<CardContent>
-          <Typography variant="h2" component="div" sx={{ mb: 1 }}>
+      {type === "exercise" ? (
+        <CardContent onClick={()=>handleOpenExercise(id)} style={{cursor:"pointer"}}>
+          <Typography variant="h6" component="div" sx={{ mb: 1 }}>
             {name}
           </Typography>
-          <Typography variant="body2">{description}</Typography>
-        </CardContent>) : (<Link to={`/work-plan-management/${id}`}>
-          {" "}
+        </CardContent>
+      ) : (
+        <Link to={`/work-plan-management/${id}`}>
           <CardContent>
             <Typography variant="h5" component="div" sx={{ mb: 1 }}>
               {name}
             </Typography>
-            <Typography variant="body2" sx={{mb:1}}>{description}</Typography>
+            <Typography variant="body2" sx={{ mb: 1 }}>
+              {description}
+            </Typography>
           </CardContent>
-        </Link>)
-      }
-
-
+        </Link>
+      )}
 
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <IconButton
@@ -119,7 +132,7 @@ export default function BasicCard({
           open={open}
           onClose={handleClose}
         >
-          {options.map((option) => (
+          {filteredOptions.map((option) => (
             <MenuItem key={option} onClick={() => handleSelect(option)}>
               {option}
             </MenuItem>
@@ -129,10 +142,32 @@ export default function BasicCard({
       <DialogBox
         dialogOpen={dialogOpen}
         setDialogOpen={setDialogOpen}
-        onClick={deleteWoroutHandler}
+        onClick={deleteWorkoutHandler}
         handleDialogClose={handleDialogClose}
         type="exercise"
       />
+      {/* <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="exercise-details-title"
+                aria-describedby="exercise-details-description"
+            >
+                <Box className="exercise-modal">
+                    <IconButton
+                        aria-label="close"
+                        onClick={handleClose}
+                        className="modal-close-button"
+                        sx={{ position: 'absolute', right: 8, top: 8 }}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                    {selectedExercise ? (
+                        <ExerciseDetails exercise={selectedExercise} pageFrom="exercises"/>
+                    ) : (
+                        <CircularProgress />
+                    )}
+                </Box>
+            </Modal> */}
     </Card>
   );
 }

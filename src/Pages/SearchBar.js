@@ -5,7 +5,7 @@ import ExerciseDetails from 'Pages/exercise search/ExerciseDetails';
 import ExerciseList from 'Pages/exercise search/ExerciseList';
 import MuscleExerciseList from 'Pages/exercise search/MuscleExerciseList';
 
-function SearchBar() {
+function SearchBar({setSelectedExercise,selectedExercise}) {
     const [searchTerm, setSearchTerm] = useState('');
     const [options, setOptions] = useState([]);
     const [filteredOptions, setFilteredOptions] = useState([]);
@@ -130,7 +130,7 @@ function SearchBar() {
             <Dialog open={isExerciseDetailsDialogOpen} onClose={() => setIsExerciseDetailsDialogOpen(false)}>
                 <DialogTitle>Exercise Details</DialogTitle>
                 <DialogContent>
-                    {selectedExerciseDetails && <ExerciseDetails exercise={selectedExerciseDetails} />}
+                    {selectedExerciseDetails && <ExerciseDetails exercise={selectedExerciseDetails} setSelectedExercise={setSelectedExercise}  pageFrom="exercises" selectedExercise={selectedExercise} />}
                     <Button onClick={() => setIsExerciseDetailsDialogOpen(false)}>Close</Button>
                 </DialogContent>
             </Dialog>
@@ -139,7 +139,7 @@ function SearchBar() {
                 <DialogTitle>{selectedCategory ? `Exercises for ${selectedCategory.name}` : 'Exercises List'}</DialogTitle>
                 <DialogContent>
                     {filteredExercisesByCategory && (
-                        <ExerciseList exerciseNames={filteredExercisesByCategory.map(exercise => exercise.name)} exercises={filteredExercisesByCategory} />)}
+                        <ExerciseList exerciseNames={filteredExercisesByCategory.map(exercise => exercise.name)} exercises={filteredExercisesByCategory} setSelectedExercise={setSelectedExercise}  selectedExercise={selectedExercise}/>)}
                     <Button onClick={() => setIsExerciseCategoryListDialogOpen(false)}>Close</Button>
                 </DialogContent>
             </Dialog>
@@ -148,7 +148,7 @@ function SearchBar() {
                 <DialogTitle>{selectedMuscle ? `Exercises for ${selectedMuscle.name}` : 'Exercises List'}</DialogTitle>
                 <DialogContent>
                     {filteredExercisesByMuscle && (
-                        <MuscleExerciseList exerciseNames={filteredExercisesByMuscle} />)}
+                        <MuscleExerciseList exerciseNames={filteredExercisesByMuscle} setSelectedExercise={setSelectedExercise}   selectedExercise={selectedExercise}/>)}
                     <Button onClick={() => setIsExerciseMuscleListDialogOpen(false)}>Close</Button>
                 </DialogContent>
             </Dialog>
