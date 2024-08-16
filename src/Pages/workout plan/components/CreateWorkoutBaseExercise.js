@@ -26,7 +26,7 @@ const CreateWorkoutBaseExercise = ({ setCreateExerciseModal, createExerciseModal
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <SearchBar setSelectedExercise={setSelectedExercise} selectedExercise={selectedExercise} />
+        <SearchBar setSelectedExercise={setSelectedExercise} selectedExercise={selectedExercise} pageFrom="exercises"/>
 
        
       </Box>

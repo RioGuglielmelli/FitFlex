@@ -10,7 +10,10 @@ function ExerciseDetails({ exercise,pageFrom,setSelectedExercise,selectedExercis
     }
 
     const isExerciseAdded = () => {
-        return !!selectedExercise.find((item)=>item.uuid === exercise.uuid)
+        if(pageFrom === 'exercises'){
+
+            return !!selectedExercise.find((item)=>item.uuid === exercise.uuid)
+        }
     }
     return (
         <Box p={3} sx={{position:"relative"}}>

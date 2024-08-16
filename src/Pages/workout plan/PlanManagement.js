@@ -30,10 +30,10 @@ const PlanManagement = () => {
       }finally{
         setIsLoading(false)
       }
-    }
+    }   
 
   useEffect(()=>{
-   
+                                                                                 
   
     if(workoutPlan.length === 0){
       fetchWorkoutPlan()
