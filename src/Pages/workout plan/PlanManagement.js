@@ -21,9 +21,9 @@ const PlanManagement = () => {
   //   modal open Handler--------------------------------------------------
   const handleOpen = () => setOpenModal(true);
   const fetchWorkoutPlan = async () => {
-      setIsLoading(true)
-      try {
-        const data = await getWorkout()
+    setIsLoading(true)
+    try {
+      const data = await getWorkout()
         setWorkoutPlan(data)
       } catch (error) {
         console.log("Failed to fetch workout plan",error)
@@ -37,8 +37,10 @@ const PlanManagement = () => {
   
     if(workoutPlan.length === 0){
       fetchWorkoutPlan()
+      setIsLoading(false)
+
     }
-  },[workoutPlan])
+  },[workoutPlan,isLoading])
 
   if(isLoading){
     return <p>Loading...</p>

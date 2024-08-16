@@ -18,11 +18,7 @@ const style = {
 
 const CreateWorkoutBaseExercise = ({ setCreateExerciseModal, createExerciseModal,setSelectedExercise ,selectedExercise}) => {
  
-
-
-
-
-  return (
+ return (
     <Modal
       open={createExerciseModal}
       onClose={() => setCreateExerciseModal(!createExerciseModal)}
